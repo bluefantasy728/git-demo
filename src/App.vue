@@ -1,0 +1,61 @@
+<template>
+  <div id="app">
+    <v-header :seller="seller"></v-header>
+    <div class="tab">
+      <router-link to="/goods" class="tab-item">商品</router-link>
+      <router-link to="/ratings" class="tab-item">评论</router-link>
+      <router-link to="/seller" class="tab-item">商家</router-link>
+    </div>
+    <router-view>
+
+    </router-view>
+    
+  </div>
+</template>
+
+<script>
+import Header from './components/Header/Header'
+import './common/style/common.scss'
+
+const ERR_NO = 0
+export default {
+  data () {
+    return {
+      seller: {}
+    }
+  },
+  components: {
+    'v-header': Header
+  },
+  created () {
+    this.$http.get('/api/seller').then((res) => {
+      console.log(res)
+      res = res.body
+      if(res.errno === ERR_NO) {
+        let data = res.data
+        this.seller = data
+      }
+    })
+  }
+}
+</script>
+<style lang="scss">
+#app{
+  .tab{
+    display: flex;
+    width: 100%;
+    color: red;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ccc;
+  }
+  .tab-item{
+    flex: 1;
+    text-align: center;
+  }
+}
+
+    
+            
+</style>
+
